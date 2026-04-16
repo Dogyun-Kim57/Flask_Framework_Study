@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>문의하기</title>
+
+  <!-- CSS 연결 -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/contact.css') }}">
+</head>
+<body class="sub-page">
+
+  <!-- 공통 헤더 -->
+  {% include 'common/header.html' %}
+
+  <main class="sub-main">
+    <div class="container">
+      <!-- 페이지 상단 -->
+      <div class="page-top">
+        <span class="section-label">Contact</span>
+        <h2>문의하기</h2>
+        <p>서비스 이용 중 궁금한 점이나 개선 의견을 남겨주세요.</p>
+      </div>
+
+      <!-- 입력 폼 카드 -->
+      <div class="form-card">
+
+        <!-- 에러 출력 -->
+        {% if error %}
+          <div class="alert-error">{{ error }}</div>
+        {% endif %}
+
+        <form method="post" class="styled-form">
+          <!-- 사용자명 -->
+          <div class="form-group">
+            <label for="name">사용자명</label>
+            <input
+              id="name"
+              type="text"
+              name="name"
+              value="{{ username|default('', true) }}"
+              placeholder="사용자명을 입력하세요"
+            >
+          </div>
+
+          <!-- 이메일 -->
+          <div class="form-group">
+            <label for="email">메일주소</label>
+            <input
+              id="email"
+              type="email"
+              name="email"
+              value="{{ email|default('', true) }}"
+              placeholder="메일주소를 입력하세요"
+            >
+          </div>
+
+          <!-- 문의 내용 -->
+          <div class="form-group">
+            <label for="description">문의내용</label>
+            <textarea
+              id="description"
+              name="description"
+              placeholder="문의 내용을 입력하세요"
+            >{{ description|default('', true) }}</textarea>
+          </div>
+
+          <!-- 버튼 -->
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">전송하기</button>
+            <a href="{{ url_for('main.index') }}" class="btn btn-secondary">홈으로</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

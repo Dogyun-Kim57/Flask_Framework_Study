@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>문의내역 확인</title>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body class="admin-page">
+
+  {% include 'common/header.html' %}
+
+  <main class="sub-main">
+    <div class="container">
+      <div class="page-top">
+        <span class="section-label">Admin Inquiry List</span>
+        <h2>문의내역 확인</h2>
+        <p>관리자가 전체 문의 목록을 확인할 수 있습니다.</p>
+      </div>
+
+      {% if contacts %}
+        <div class="list-table">
+          <div class="list-head">
+            <div>접수일</div>
+            <div>이름</div>
+            <div>이메일</div>
+            <div>문의내용</div>
+          </div>
+
+          {% for c in contacts %}
+            <!--
+              각 문의 행 전체를 클릭 가능하게 만들고 싶을 수도 있지만,
+              지금은 가장 안전하게 마지막 컬럼에 상세보기 링크를 명시적으로 둔다.
+            -->
+            <div class="list-row admin-inquiry-row">
+              <div>{{ c.created_at.strftime('%Y-%m-%d %H:%M') if c.created_at else '' }}</div>
+              <div>{{ c.name }}</div>
+              <div>{{ c.email }}</div>
+
+              <div class="admin-inquiry-actions">
+                <div class="text-ellipsis" title="{{ c.description }}">
+                  {{ c.description }}
+                </div>
+
+                <a
+                  href="{{ url_for('admin.inquiry_detail', contact_id=c.id) }}"
+                  class="btn btn-secondary btn-sm"
+                >
+                  상세보기
+                </a>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="empty-box">
+          <p>문의 데이터가 없습니다.</p>
+        </div>
+      {% endif %}
+    </div>
+  </main>
+</body>
+</html>

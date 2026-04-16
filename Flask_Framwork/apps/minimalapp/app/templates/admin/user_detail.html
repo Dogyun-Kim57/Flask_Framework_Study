@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>회원 상세 정보</title>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body class="admin-page">
+
+  {% include 'common/header.html' %}
+
+  <main class="sub-main">
+    <div class="container narrow-container">
+      <div class="page-top">
+        <span class="section-label">Admin User Detail</span>
+        <h2>회원 상세 정보</h2>
+        <p>관리자가 특정 회원의 정보를 확인하는 페이지입니다.</p>
+      </div>
+
+      <!-- 회원 기본 정보 카드 -->
+      <div class="detail-card">
+        <div class="detail-row">
+          <span>회원 ID</span>
+          <strong>{{ user.id }}</strong>
+        </div>
+
+        <div class="detail-row">
+          <span>아이디</span>
+          <strong>{{ user.username }}</strong>
+        </div>
+
+        <div class="detail-row">
+          <span>이메일</span>
+          <strong>{{ user.email }}</strong>
+        </div>
+
+        <div class="detail-row">
+          <span>권한</span>
+          <strong>{{ user.role }}</strong>
+        </div>
+
+        <div class="detail-row">
+          <span>가입일</span>
+          <strong>{{ user.created_at.strftime('%Y-%m-%d %H:%M') if user.created_at else '' }}</strong>
+        </div>
+      </div>
+
+      <!-- 추후 기능 확장 영역 -->
+      <div class="detail-reply-box">
+        <h3>관리 기능 영역</h3>
+        <p class="muted-text">
+          추후 이 영역에 회원 추방, 관리자 권한 부여 등의 기능을 추가할 수 있습니다.
+        </p>
+
+        <!--
+        예시:
+        <div class="form-actions">
+          <button type="button" class="btn btn-primary">관리자 권한 부여</button>
+          <button type="button" class="btn btn-secondary">회원 추방</button>
+        </div>
+        -->
+      </div>
+
+      <div class="form-actions">
+        <a href="{{ url_for('admin.user_list') }}" class="btn btn-secondary">목록으로</a>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

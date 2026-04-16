@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>회원 정보</title>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/member.css') }}">
+</head>
+<body class="member-page">
+
+  {% include 'common/header.html' %}
+
+  <main class="sub-main">
+    <div class="container narrow-container">
+      <div class="page-top">
+        <span class="section-label">My Profile</span>
+        <h2>회원 정보</h2>
+        <p>현재 내 회원 정보를 확인할 수 있습니다.</p>
+      </div>
+
+      <div class="profile-card">
+        <div class="profile-row">
+          <span>아이디</span>
+          <strong>{{ user.username }}</strong>
+        </div>
+
+        <div class="profile-row">
+          <span>이메일</span>
+          <strong>{{ user.email }}</strong>
+        </div>
+
+        <div class="profile-row">
+          <span>권한</span>
+          <strong>{{ user.role }}</strong>
+        </div>
+
+        <div class="profile-row">
+          <span>가입일</span>
+          <strong>{{ user.created_at.strftime('%Y-%m-%d %H:%M') if user.created_at else '' }}</strong>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <a href="{{ url_for('member.profile_edit') }}" class="btn btn-primary">회원 정보 수정</a>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

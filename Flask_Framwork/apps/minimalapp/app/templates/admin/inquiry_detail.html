@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>문의 상세</title>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body class="admin-page">
+
+  {% include 'common/header.html' %}
+
+  <main class="sub-main">
+    <div class="container narrow-container">
+      <div class="page-top">
+        <span class="section-label">Admin Inquiry Detail</span>
+        <h2>문의 상세 확인</h2>
+        <p>관리자가 문의 상세 내용을 확인하고 답변을 저장하는 페이지입니다.</p>
+      </div>
+
+      <!-- 문의 기본 정보 카드 -->
+      <div class="detail-card">
+        <div class="detail-row">
+          <span>작성자</span>
+          <strong>{{ contact.name }}</strong>
+        </div>
+
+        <div class="detail-row">
+          <span>이메일</span>
+          <strong>{{ contact.email }}</strong>
+        </div>
+
+        <div class="detail-row">
+          <span>접수일</span>
+          <strong>{{ contact.created_at.strftime('%Y-%m-%d %H:%M') if contact.created_at else '' }}</strong>
+        </div>
+      </div>
+
+      <!-- 문의 본문 -->
+      <div class="detail-message-box">
+        <h3>문의 내용</h3>
+        <p>{{ contact.description }}</p>
+      </div>
+
+      <!-- 관리자 답변 입력 / 수정 영역 -->
+      <div class="detail-reply-box">
+        <h3>관리자 답변</h3>
+
+        <!--
+          method="post" 로 현재 상세 페이지에 다시 요청을 보냄
+          admin_routes.py의 inquiry_detail()에서 POST를 받아 reply를 저장함
+        -->
+        <form method="post" class="styled-form">
+          <div class="form-group">
+            <label for="reply">답변 내용</label>
+
+            <!--
+              기존 답변이 있으면 그대로 textarea에 표시
+              없으면 빈칸으로 출력
+              즉, 새 답변 작성도 되고 수정도 가능
+            -->
+            <textarea
+              id="reply"
+              name="reply"
+              placeholder="답변 내용을 입력하세요"
+            >{{ contact.reply or '' }}</textarea>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">답변 저장</button>
+            <a href="{{ url_for('admin.inquiry_list') }}" class="btn btn-secondary">목록으로</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

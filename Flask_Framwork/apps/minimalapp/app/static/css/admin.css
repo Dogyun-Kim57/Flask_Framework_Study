@@ -1,0 +1,132 @@
+.admin-page {
+  background: #f5f7fb;
+}
+
+.list-table {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #e5ebf5;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+}
+
+.list-head,
+.list-row {
+  display: grid;
+  grid-template-columns: 180px 120px 220px 1fr;
+  gap: 16px;
+  padding: 16px 18px;
+  align-items: center;
+}
+
+.admin-user-head {
+  grid-template-columns: 80px 140px 220px 120px 180px;
+}
+
+.admin-user-row {
+  grid-template-columns: 80px 140px 220px 120px 180px;
+}
+
+.list-head {
+  background: #eef4ff;
+  font-weight: 800;
+  color: #1e3a8a;
+}
+
+.list-row {
+  border-top: 1px solid #eef2f7;
+}
+
+.text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.empty-box,
+.detail-card,
+.detail-message-box,
+.detail-reply-box {
+  background: #ffffff;
+  border: 1px solid #e6ebf3;
+  border-radius: 24px;
+  padding: 28px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+}
+
+.empty-box {
+  text-align: center;
+}
+
+.detail-card,
+.detail-message-box,
+.detail-reply-box {
+  margin-bottom: 20px;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 16px 0;
+  border-bottom: 1px solid #eef2f7;
+}
+
+.detail-row:last-child {
+  border-bottom: none;
+}
+
+.detail-row span {
+  color: #6b7280;
+}
+
+.detail-row strong {
+  color: #111827;
+}
+
+.detail-message-box h3,
+.detail-reply-box h3 {
+  margin: 0 0 14px;
+  color: #111827;
+}
+
+.detail-message-box p,
+.detail-reply-box p {
+  margin: 0;
+  color: #374151;
+  line-height: 1.7;
+}
+
+.muted-text {
+  color: #6b7280;
+}
+
+.admin-inquiry-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.btn-sm {
+  min-height: auto;
+  padding: 8px 14px;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+@media (max-width: 992px) {
+  .list-head,
+  .list-row,
+  .admin-user-head,
+  .admin-user-row {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-inquiry-actions {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>내 문의 내역</title>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/contact.css') }}">
+</head>
+<body class="history-page">
+  <div class="history-overlay"></div>
+
+  <header class="sub-header history-header">
+    <div class="container header-inner">
+      <a href="{{ url_for('main.index') }}" class="logo">ObjectDetect AI</a>
+      <nav class="nav">
+        <a href="{{ url_for('main.index') }}">홈</a>
+        <a href="{{ url_for('contact.contact') }}">문의하기</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="history-main">
+    <div class="container history-layout">
+      <section class="history-hero">
+        <span class="section-label history-label">Inquiry History</span>
+        <h1>내 문의 내역</h1>
+        <p>
+          지금까지 등록한 문의 내용을<br>
+          깔끔하게 확인할 수 있습니다.
+        </p>
+
+        <div class="history-hero-actions">
+          <a href="{{ url_for('contact.contact') }}" class="btn btn-primary">새 문의 작성</a>
+          <a href="{{ url_for('main.index') }}" class="btn btn-secondary">홈으로</a>
+        </div>
+      </section>
+
+      <section class="history-panel">
+        {% if contacts %}
+          <div class="history-panel-inner">
+            {% for c in contacts %}
+              <article class="history-glass-card">
+                <div class="history-card-top">
+                  <span class="history-chip">
+                    Submitted: {{ c.created_at.strftime('%Y-%m-%d %H:%M') if c.created_at else '' }}
+                  </span>
+                </div>
+
+                <div class="history-card-body">
+                  <div class="history-user-block">
+                    <h3>{{ c.name }}</h3>
+                    <p class="history-email">{{ c.email }}</p>
+                  </div>
+
+                  <div class="history-message-block">
+                    <span class="history-message-label">Message</span>
+                    <p>{{ c.description }}</p>
+                  </div>
+                </div>
+              </article>
+            {% endfor %}
+          </div>
+        {% else %}
+          <div class="history-empty-card">
+            <h3>아직 등록된 문의가 없습니다.</h3>
+            <p>첫 문의를 작성해서 내역을 채워보세요.</p>
+            <a href="{{ url_for('contact.contact') }}" class="btn btn-primary">문의하러 가기</a>
+          </div>
+        {% endif %}
+      </section>
+    </div>
+  </main>
+</body>
+</html>

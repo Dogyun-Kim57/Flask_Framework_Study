@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>문의 완료</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="sub-page">
+  <main class="sub-main">
+    <div class="container narrow-container">
+      <div class="complete-card">
+        <div class="complete-icon">✓</div>
+        <span class="section-label">Completed</span>
+        <h2>문의가 정상적으로 접수되었습니다.</h2>
+        <p class="complete-desc">
+          입력하신 내용은 관리자에게 전달되었습니다.<br>
+          필요 시 <strong>{{ email }}</strong> 로 답변이 발송됩니다.
+        </p>
+
+        <div class="summary-box">
+          <div class="summary-row">
+            <span>이름</span>
+            <strong>{{ username }}</strong>
+          </div>
+          <div class="summary-row">
+            <span>이메일</span>
+            <strong>{{ email }}</strong>
+          </div>
+          <div class="summary-row column">
+            <span>문의내용</span>
+            <p>{{ description }}</p>
+          </div>
+        </div>
+
+        <div class="form-actions center">
+          <a href="{{ url_for('contact.contact_history') }}" class="btn btn-primary">내 문의 내역</a>
+          <a href="{{ url_for('main.index') }}" class="btn btn-secondary">홈으로</a>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

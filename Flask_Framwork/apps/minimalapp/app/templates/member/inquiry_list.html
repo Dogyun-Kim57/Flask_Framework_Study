@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>내 문의 내역</title>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/member.css') }}">
+</head>
+<body class="member-page">
+
+  {% include 'common/header.html' %}
+
+  <main class="sub-main">
+    <div class="container">
+      <div class="page-top">
+        <span class="section-label">My Inquiry History</span>
+        <h2>내 문의 내역</h2>
+        <p>내가 작성한 문의를 리스트 형태로 확인할 수 있습니다.</p>
+      </div>
+
+      {% if contacts %}
+        <div class="list-table">
+          <div class="list-head">
+            <div>접수일</div>
+            <div>이름</div>
+            <div>이메일</div>
+            <div>문의내용</div>
+          </div>
+
+          {% for c in contacts %}
+            <div class="list-row member-inquiry-row">
+              <div>{{ c.created_at.strftime('%Y-%m-%d %H:%M') if c.created_at else '' }}</div>
+              <div>{{ c.name }}</div>
+              <div>{{ c.email }}</div>
+
+              <div class="member-inquiry-actions">
+                <div class="text-ellipsis" title="{{ c.description }}">
+                  {{ c.description }}
+                </div>
+
+                <a
+                  href="{{ url_for('member.inquiry_detail', contact_id=c.id) }}"
+                  class="btn btn-secondary btn-sm"
+                >
+                  상세보기
+                </a>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="empty-box">
+          <p>문의 내역이 없습니다.</p>
+        </div>
+      {% endif %}
+    </div>
+  </main>
+</body>
+</html>
