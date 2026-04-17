@@ -1,0 +1,48 @@
+{% extends 'layouts/member_base.html' %}
+
+{% block member_title %}게시글 작성{% endblock %}
+
+{% block extra_css %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/post.css') }}">
+{% endblock %}
+
+{% block member_content %}
+<main class="sub-main">
+  <div class="container narrow-container">
+    <div class="page-top">
+      <span class="section-label">Board Write</span>
+      <h2>게시글 작성</h2>
+      <p>제목, 내용, 첨부파일을 등록할 수 있습니다.</p>
+    </div>
+
+    <div class="form-card">
+      {% if error %}
+        <div class="alert-error">{{ error }}</div>
+      {% endif %}
+
+      <form method="post" enctype="multipart/form-data" class="styled-form">
+        <div class="form-group">
+          <label for="title">제목</label>
+          <input id="title" type="text" name="title" value="{{ title|default('', true) }}" placeholder="제목을 입력하세요">
+        </div>
+
+        <div class="form-group">
+          <label for="content">내용</label>
+          <textarea id="content" name="content" placeholder="내용을 입력하세요">{{ content|default('', true) }}</textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="files">첨부파일</label>
+          <input id="files" type="file" name="files" multiple>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">등록하기</button>
+          <a href="{{ url_for('post.post_list') }}" class="btn btn-secondary">목록으로</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</main>
+{% endblock %}

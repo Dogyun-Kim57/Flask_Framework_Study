@@ -2,7 +2,7 @@
 from flask import Blueprint, request
 
 # 관리자 권한 체크
-from app.common.auth import admin_required
+from app.common.auth import admin_required, get_current_user_id
 
 # 공통 응답 클래스
 from app.common.response import Response
@@ -27,16 +27,12 @@ admin_bp = Blueprint("admin", __name__, url_prefix="/admin")
 def inquiry_list():
     """
     관리자용 문의 목록 페이지
-
-    역할:
-    - 전체 문의 목록 조회
-    - 각 문의를 클릭해서 상세 페이지로 이동할 수 있는 기반 화면
     """
 
     contacts = ContactRepository.find_all()
 
     return Response.render(
-        "admin/inquiry_list.html",
+        "admin/inquiry/list.html",
         contacts=contacts
     )
 
@@ -46,35 +42,19 @@ def inquiry_list():
 def inquiry_detail(contact_id):
     """
     관리자용 문의 상세 페이지
-
-    GET:
-    - 특정 문의 상세 정보 확인
-
-    POST:
-    - 관리자가 답변 내용을 저장
-    - 같은 페이지로 다시 리다이렉트하여 최신 답변 내용 반영
     """
 
-    # 문의 1건 조회
     contact = Contact.query.get_or_404(contact_id)
 
-    # 답변 저장 처리
     if request.method == "POST":
-        # textarea에서 넘어온 reply 값 수집
-        # None 방지를 위해 기본값 "" 사용 후 strip 처리
         reply = request.form.get("reply", "").strip()
-
-        # DB의 reply 컬럼에 답변 저장
         contact.reply = reply
-
-        # 실제 반영
         db.session.commit()
 
-        # 저장 후 다시 상세 페이지로 이동
         return Response.redirect("admin.inquiry_detail", contact_id=contact.id)
 
     return Response.render(
-        "admin/inquiry_detail.html",
+        "admin/inquiry/detail.html",
         contact=contact
     )
 
@@ -84,38 +64,67 @@ def inquiry_detail(contact_id):
 def user_list():
     """
     관리자용 회원 관리 페이지
-
-    역할:
-    - 전체 회원 목록 조회
-    - 추후 상세 페이지로 이동 가능
     """
 
     users = UserRepository.find_all()
 
     return Response.render(
-        "admin/user_list.html",
+        "admin/user/list.html",
         users=users
     )
+
 
 @admin_bp.route("/users/<int:user_id>")
 @admin_required
 def user_detail(user_id):
     """
     관리자용 회원 상세 페이지
-
-    역할:
-    - 특정 회원의 상세 정보 확인
-    - 추후 회원 추방 / 관리자 권한 부여 기능 확장 가능
     """
 
     user = UserRepository.find_by_id(user_id)
 
-    # 사용자가 없으면 메인으로 보내는 대신,
-    # 여기서는 간단히 목록으로 돌려보내도 됨
     if not user:
         return Response.redirect("admin.user_list")
 
     return Response.render(
-        "admin/user_detail.html",
+        "admin/user/detail.html",
         user=user
     )
+
+@admin_bp.route("/users/<int:user_id>/promote", methods=["POST"])
+@admin_required
+def promote_user(user_id):
+    user = UserRepository.find_by_id(user_id)
+
+    if not user:
+        return Response.redirect("admin.user_list")
+
+    # 이미 관리자면 다시 올릴 필요 없음
+    if user.role == "admin":
+        return Response.redirect("admin.user_detail", user_id=user.id)
+
+    # 자기 자신에게 승격 버튼을 누르는 경우도 그냥 막아도 되고,
+    # 허용해도 되지만 여기서는 불필요하므로 막음
+    if user.id == get_current_user_id():
+        return Response.redirect("admin.user_detail", user_id=user.id)
+
+    UserRepository.promote_to_admin(user)
+
+    return Response.redirect("admin.user_detail", user_id=user.id)
+
+
+@admin_bp.route("/users/<int:user_id>/delete", methods=["POST"])
+@admin_required
+def delete_user(user_id):
+    user = UserRepository.find_by_id(user_id)
+
+    if not user:
+        return Response.redirect("admin.user_list")
+
+    # 자기 자신 추방 방지
+    if user.id == get_current_user_id():
+        return Response.redirect("admin.user_detail", user_id=user.id)
+
+    UserRepository.delete(user)
+
+    return Response.redirect("admin.user_list")

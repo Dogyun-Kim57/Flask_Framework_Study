@@ -1,90 +1,48 @@
-<!--
-공통 헤더 템플릿
-
-역할:
-1. 모든 페이지 상단 네비게이션 공통화
-2. 로그인 여부에 따라 메뉴 분기
-3. 관리자 / 일반 회원 role에 따라 드롭다운 메뉴 변경
-
-주의:
-- session["role"] 값이 반드시 있어야 정상 동작
-- session["username"] 이 있어야 로그인 상태로 판단
--->
-
 <header class="site-header">
   <div class="container header-inner">
-
-    <!-- 로고 -->
     <a href="{{ url_for('main.index') }}" class="logo">
       ObjectDetect AI
     </a>
 
     <nav class="nav">
-      <!-- 공통 메뉴 -->
       <a href="{{ url_for('main.index') }}">홈</a>
       <a href="{{ url_for('contact.contact') }}">문의하기</a>
 
-      <!-- 로그인 상태 체크 -->
+
       {% if session.get('user_id') %}
+      <a href="{{ url_for('post.post_list') }}">게시판</a>
+      {% if session.get('role') == 'admin' %}
+      <div class="dropdown">
+        <button type="button" class="dropdown-toggle">
+          관리자 기능
+        </button>
 
-        <!-- ============================== -->
-        <!-- 관리자 로그인 상태 -->
-        <!-- ============================== -->
-        {% if session.get('role') == 'admin' %}
-          <div class="dropdown">
-            <!-- 드롭다운을 여는 버튼 -->
-            <button type="button" class="dropdown-toggle">
-              관리자 기능
-            </button>
-
-            <!-- 관리자 메뉴 -->
-            <div class="dropdown-menu">
-              <!-- 관리자용 문의 목록 -->
-              <a href="{{ url_for('admin.inquiry_list') }}">
-                문의내역 확인
-              </a>
-
-              <!-- 관리자용 회원 관리 -->
-              <a href="{{ url_for('admin.user_list') }}">
-                가입 회원 정보 확인
-              </a>
-            </div>
-          </div>
-
-        <!-- ============================== -->
-        <!-- 일반 회원 로그인 상태 -->
-        <!-- ============================== -->
-        {% else %}
-          <div class="dropdown">
-            <!-- 회원 기능 드롭다운 버튼 -->
-            <button type="button" class="dropdown-toggle">
-              회원 기능
-            </button>
-
-            <!-- 회원 메뉴 -->
-            <div class="dropdown-menu">
-              <!-- 회원 정보 보기 / 수정용 페이지 -->
-              <a href="{{ url_for('member.profile') }}">
-                회원 정보 수정
-              </a>
-
-              <!-- 본인 문의 내역 -->
-              <a href="{{ url_for('member.inquiry_list') }}">
-                내 문의 내역
-              </a>
-            </div>
-          </div>
-        {% endif %}
-
-        <!-- 로그아웃 -->
-        <a href="{{ url_for('auth.logout') }}" class="nav-login">로그아웃</a>
-
-      <!-- ============================== -->
-      <!-- 비로그인 상태 -->
-      <!-- ============================== -->
+        <div class="dropdown-menu">
+          <a href="{{ url_for('admin.inquiry_list') }}">문의내역 확인</a>
+          <a href="{{ url_for('admin.user_list') }}">가입 회원 정보 확인</a>
+          <a href="{{ url_for('post.admin_post_list') }}">게시글 관리</a>
+        </div>
+      </div>
       {% else %}
-        <a href="{{ url_for('auth.login') }}">로그인</a>
-        <a href="{{ url_for('auth.signup') }}">회원가입</a>
+      <div class="dropdown">
+        <button type="button" class="dropdown-toggle">
+          회원 기능
+        </button>
+
+        <div class="dropdown-menu">
+          <a href="{{ url_for('member.profile') }}">내 계정 정보</a>
+          <a href="{{ url_for('member.profile_edit') }}">계정 정보 수정</a>
+          <a href="{{ url_for('member.inquiry_list') }}">내 문의 내역</a>
+          <a href="{{ url_for('post.post_list', my=1) }}">내 게시글</a>
+        </div>
+      </div>
+      {% endif %}
+
+      <a href="{{ url_for('auth.logout') }}" class="nav-login">로그아웃</a>
+
+      {% else %}
+      <a href="{{ url_for('auth.login') }}">로그인</a>
+      <a href="{{ url_for('auth.signup') }}">회원가입</a>
       {% endif %}
     </nav>
   </div>

@@ -30,7 +30,7 @@ class User(db.Model):
     # 비밀번호는 평문이 아니라 해시값만 저장
     password_hash = db.Column(db.String(255), nullable=False)
 
-    # 🔥 권한 컬럼 추가
+    #  권한 컬럼 추가
     # - user  : 일반 회원
     # - admin : 관리자
     # 기본값은 일반 회원(user)
@@ -41,7 +41,19 @@ class User(db.Model):
 
     # User 1 : N Contact 관계
     # 한 사용자는 여러 개의 문의를 남길 수 있다.
-    contacts = db.relationship("Contact", back_populates="user", lazy=True)
+    contacts = db.relationship(
+        "Contact",
+        back_populates="user",
+        lazy=True,
+        cascade="all, delete-orphan"
+    )
+
+    posts = db.relationship(
+        "Post",
+        back_populates="user",
+        lazy=True,
+        cascade="all, delete-orphan"
+    )
 
     def __repr__(self):
         """

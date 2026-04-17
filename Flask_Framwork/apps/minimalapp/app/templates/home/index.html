@@ -1,81 +1,66 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8">
+{% extends 'layouts/base.html' %}
 
-  <!-- 브라우저 탭 제목 -->
-  <title>홈</title>
+{% block title %}홈{% endblock %}
 
-  <!-- 공통 CSS -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+{% block extra_css %}
+  {{ super() }}
   <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
-</head>
-<body>
+{% endblock %}
 
-  <!-- 🔥 공통 헤더 include -->
-  {% include 'common/header.html' %}
+{% block content %}
+<main>
+  <section class="hero">
+    <div class="container hero-grid">
 
-  <main>
-    <!-- 메인 히어로 영역 -->
-    <section class="hero">
-      <div class="container hero-grid">
+      <div class="hero-text">
+        <span class="eyebrow">Object Detection</span>
 
-        <!-- 왼쪽 텍스트 영역 -->
-        <div class="hero-text">
-          <span class="eyebrow">Object Detection</span>
+        <h1>
+          이미지에서<br>
+          물체를 감지하는<br>
+          스마트한 앱
+        </h1>
 
-          <h1>
-            이미지에서<br>
-            물체를 감지하는<br>
-            스마트한 앱
-          </h1>
+        <p class="hero-desc">
+          AI 기반 객체 탐지 기술로 다양한 사물을 빠르게 인식하고,
+          직관적인 화면으로 결과를 확인할 수 있는 물체감지 서비스입니다.
+        </p>
 
-          <p class="hero-desc">
-            AI 기반 객체 탐지 기술로 다양한 사물을 빠르게 인식하고,
-            직관적인 화면으로 결과를 확인할 수 있는 물체감지 서비스입니다.
-          </p>
-
-          <!-- CTA 버튼 -->
-          <div class="hero-actions">
-            {% if username %}
-              <a href="{{ url_for('contact.contact') }}" class="btn btn-primary">
-                서비스 시작하기
-              </a>
-            {% else %}
-              <a href="{{ url_for('auth.signup') }}" class="btn btn-primary">
-                지금 시작하기
-              </a>
-              <a href="{{ url_for('auth.login') }}" class="btn btn-secondary">
-                로그인
-              </a>
-            {% endif %}
-          </div>
-
-          <!-- 로그인 안내 -->
+        <div class="hero-actions">
           {% if username %}
-            <div class="status-box">
-              <strong>{{ username }}</strong>님, 현재 로그인 상태입니다.
-            </div>
+            <a href="{{ url_for('contact.contact') }}" class="btn btn-primary">
+              서비스 시작하기
+            </a>
           {% else %}
-            <div class="status-box muted">
-              현재 로그인되어 있지 않습니다. 회원가입 후 기능을 이용해보세요.
-            </div>
+            <a href="{{ url_for('auth.signup') }}" class="btn btn-primary">
+              지금 시작하기
+            </a>
+            <a href="{{ url_for('auth.login') }}" class="btn btn-secondary">
+              로그인
+            </a>
           {% endif %}
         </div>
 
-        <!-- 오른쪽 메인 이미지 -->
-        <div class="hero-image-wrap">
-          <img
-            src="{{ url_for('static', filename='images/main.png') }}"
-            alt="물체 감지 메인 이미지"
-            class="hero-image"
-          >
-        </div>
-
+        {% if username %}
+          <div class="status-box">
+            <strong>{{ username }}</strong>님, 현재 로그인 상태입니다.
+          </div>
+        {% else %}
+          <div class="status-box muted">
+            현재 로그인되어 있지 않습니다. 회원가입 후 기능을 이용해보세요.
+          </div>
+        {% endif %}
       </div>
-    </section>
-  </main>
-</body>
-</html>
+
+      <div class="hero-image-wrap">
+        <img
+          src="{{ url_for('static', filename='images/main.png') }}"
+          alt="물체 감지 메인 이미지"
+          class="hero-image"
+        >
+      </div>
+
+    </div>
+  </section>
+</main>
+{% endblock %}

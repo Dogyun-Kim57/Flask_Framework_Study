@@ -26,13 +26,13 @@ member_bp = Blueprint("member", __name__, url_prefix="/member")
 @login_required
 def profile():
     """
-    회원 정보 확인 페이지
+    내 계정 정보 확인 페이지
     """
 
     user = UserRepository.find_by_id(get_current_user_id())
 
     return Response.render(
-        "member/profile.html",
+        "common/profile/detail.html",
         user=user
     )
 
@@ -41,18 +41,7 @@ def profile():
 @login_required
 def profile_edit():
     """
-    회원 정보 수정 페이지
-
-    현재 단계:
-    - 화면 뼈대 + 수정 폼 준비
-    - 실제 저장 처리도 같이 넣어둠
-
-    수정 가능 항목:
-    - username
-    - email
-
-    주의:
-    - 비밀번호 수정은 아직 제외
+    내 계정 정보 수정 페이지
     """
 
     user = UserRepository.find_by_id(get_current_user_id())
@@ -61,19 +50,17 @@ def profile_edit():
         username = (request.form.get("username") or "").strip()
         email = (request.form.get("email") or "").strip()
 
-        # 아주 기본적인 검증만 우선 적용
         if not username or not email:
             return Response.render(
-                "member/profile_edit.html",
+                "common/profile/edit.html",
                 user=user,
                 error="아이디와 이메일을 모두 입력해주세요."
             )
 
-        # 중복 체크
         existing_username_user = UserRepository.find_by_username(username)
         if existing_username_user and existing_username_user.id != user.id:
             return Response.render(
-                "member/profile_edit.html",
+                "common/profile/edit.html",
                 user=user,
                 error="이미 사용 중인 아이디입니다."
             )
@@ -81,12 +68,11 @@ def profile_edit():
         existing_email_user = UserRepository.find_by_email(email)
         if existing_email_user and existing_email_user.id != user.id:
             return Response.render(
-                "member/profile_edit.html",
+                "common/profile/edit.html",
                 user=user,
                 error="이미 사용 중인 이메일입니다."
             )
 
-        # 실제 수정 반영
         user.username = username
         user.email = email
         db.session.commit()
@@ -94,7 +80,7 @@ def profile_edit():
         return Response.redirect("member.profile")
 
     return Response.render(
-        "member/profile_edit.html",
+        "common/profile/edit.html",
         user=user
     )
 
@@ -109,7 +95,7 @@ def inquiry_list():
     contacts = ContactRepository.find_by_user_id(get_current_user_id())
 
     return Response.render(
-        "member/inquiry_list.html",
+        "member/inquiry/list.html",
         contacts=contacts
     )
 
@@ -119,18 +105,14 @@ def inquiry_list():
 def inquiry_detail(contact_id):
     """
     회원 본인의 문의 상세 페이지
-
-    중요한 점:
-    - 반드시 본인 문의만 열람 가능해야 함
     """
 
     contact = Contact.query.get_or_404(contact_id)
 
-    # 본인 문의가 아니면 메인으로 돌려보냄
     if contact.user_id != get_current_user_id():
         return Response.redirect("main.index")
 
     return Response.render(
-        "member/inquiry_detail.html",
+        "member/inquiry/detail.html",
         contact=contact
     )

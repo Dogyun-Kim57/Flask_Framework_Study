@@ -1,0 +1,88 @@
+{% extends 'layouts/member_base.html' %}
+
+{% block member_title %}게시글 상세{% endblock %}
+
+{% block extra_css %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/post.css') }}">
+{% endblock %}
+
+{% block member_content %}
+<main class="sub-main">
+  <div class="container narrow-container">
+    <div class="page-top">
+      <span class="section-label">Board Detail</span>
+      <h2>게시글 상세</h2>
+      <p>게시글 내용과 첨부파일을 확인할 수 있습니다.</p>
+    </div>
+
+    <div class="detail-card">
+      <div class="detail-row">
+        <span>제목</span>
+        <strong>{{ post.title }}</strong>
+      </div>
+
+      <div class="detail-row">
+        <span>작성자</span>
+        <strong>{{ post.user.username }}</strong>
+      </div>
+
+      <div class="detail-row">
+        <span>이메일</span>
+        <strong>{{ post.user.email }}</strong>
+      </div>
+
+      <div class="detail-row">
+        <span>작성일</span>
+        <strong>{{ post.created_at.strftime('%Y-%m-%d %H:%M') if post.created_at else '' }}</strong>
+      </div>
+    </div>
+
+    <div class="detail-message-box">
+      <h3>내용</h3>
+      <p>{{ post.content }}</p>
+    </div>
+
+    <div class="detail-reply-box">
+      <h3>첨부파일</h3>
+
+      {% if post.files %}
+        <div class="file-list">
+          {% for f in post.files %}
+            <div class="file-item">
+              <div>
+                <strong>{{ f.original_name }}</strong>
+                <p>{{ f.file_size }} bytes</p>
+              </div>
+
+              <div class="form-actions">
+                <a href="{{ url_for('post.download_file', file_id=f.id) }}" class="btn btn-secondary btn-sm">다운로드</a>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p class="muted-text">첨부파일이 없습니다.</p>
+      {% endif %}
+    </div>
+
+    <div class="form-actions">
+      <a href="{{ url_for('post.post_list') }}" class="btn btn-secondary">목록으로</a>
+
+      {% if session.get('user_id') == post.user_id %}
+        <a href="{{ url_for('post.edit_post', post_id=post.id) }}" class="btn btn-primary">수정하기</a>
+
+        <form method="post" action="{{ url_for('post.delete_post', post_id=post.id) }}" onsubmit="return confirm('게시글을 삭제하시겠습니까?');">
+          <button type="submit" class="btn btn-secondary">게시글 삭제</button>
+        </form>
+      {% endif %}
+
+      {% if session.get('role') == 'admin' %}
+        <form method="post" action="{{ url_for('post.admin_delete_post', post_id=post.id) }}" onsubmit="return confirm('관리자 권한으로 이 게시글을 삭제하시겠습니까?');">
+          <button type="submit" class="btn btn-secondary">관리자 강제 삭제</button>
+        </form>
+      {% endif %}
+    </div>
+  </div>
+</main>
+{% endblock %}

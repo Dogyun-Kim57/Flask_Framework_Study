@@ -39,22 +39,30 @@ def create_app():
     mail.init_app(app)
 
     # 블루프린트 import
+
     # 순환참조 방지를 위해 함수 내부 import 유지
     from app.routes.main_routes import main_bp
     from app.routes.auth_routes import auth_bp
     from app.routes.contact_routes import contact_bp
 
-    # 🔥 새로 추가한 관리자 / 회원 블루프린트
+    # 관리자 / 회원 블루프린트
     from app.routes.admin_routes import admin_bp
     from app.routes.member_routes import member_bp
+
+    # 게시판 관련
+    from app.routes.post_routes import post_bp
+
 
     # 블루프린트 등록
     app.register_blueprint(main_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(contact_bp)
 
-    # 🔥 관리자 / 회원 기능 등록
+    # 관리자 / 회원 기능 등록
     app.register_blueprint(admin_bp)
     app.register_blueprint(member_bp)
+
+    # 게시판
+    app.register_blueprint(post_bp)
 
     return app

@@ -1,0 +1,79 @@
+{% extends 'layouts/admin_base.html' %}
+
+{% block admin_title %}회원 상세 정보{% endblock %}
+
+{% block admin_content %}
+<main class="sub-main">
+  <div class="container narrow-container">
+
+    <div class="page-top">
+      <span class="section-label">Admin User Detail</span>
+      <h2>회원 상세 정보</h2>
+      <p>관리자가 특정 회원의 정보를 확인하고 권한을 관리할 수 있습니다.</p>
+    </div>
+
+    <div class="detail-card">
+      <div class="detail-row">
+        <span>회원 ID</span>
+        <strong>{{ user.id }}</strong>
+      </div>
+
+      <div class="detail-row">
+        <span>아이디</span>
+        <strong>{{ user.username }}</strong>
+      </div>
+
+      <div class="detail-row">
+        <span>이메일</span>
+        <strong>{{ user.email }}</strong>
+      </div>
+
+      <div class="detail-row">
+        <span>권한</span>
+        <strong>{{ user.role }}</strong>
+      </div>
+
+      <div class="detail-row">
+        <span>가입일</span>
+        <strong>{{ user.created_at.strftime('%Y-%m-%d %H:%M') if user.created_at else '' }}</strong>
+      </div>
+    </div>
+
+    <div class="detail-reply-box">
+      <h3>관리 기능</h3>
+      <p class="muted-text">
+        회원 추방 및 관리자 권한 부여를 수행할 수 있습니다.
+      </p>
+
+      <div class="form-actions">
+        {% if user.role != 'admin' and user.id != session.get('user_id') %}
+          <form
+            method="post"
+            action="{{ url_for('admin.promote_user', user_id=user.id) }}"
+            onsubmit="return confirm('정말 관리자 등급을 부여하시겠습니까?');"
+          >
+            <button type="submit" class="btn btn-primary">
+              관리자 등급 부여
+            </button>
+          </form>
+        {% endif %}
+
+        <form
+          method="post"
+          action="{{ url_for('admin.delete_user', user_id=user.id) }}"
+          onsubmit="return confirm('정말 이 회원을 추방하시겠습니까?');"
+        >
+          <button type="submit" class="btn btn-secondary">
+            회원 추방
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <a href="{{ url_for('admin.user_list') }}" class="btn btn-secondary">목록으로</a>
+    </div>
+
+  </div>
+</main>
+{% endblock %}

@@ -1,0 +1,110 @@
+{% extends 'layouts/member_base.html' %}
+
+{% block member_title %}게시판{% endblock %}
+
+{% block extra_css %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/post.css') }}">
+{% endblock %}
+
+{% block member_content %}
+<main class="sub-main">
+  <div class="container">
+    <div class="page-top board-top">
+      <div>
+        <span class="section-label">Board List</span>
+        <h2>게시판</h2>
+        <p>검색, 정렬, 내 글 보기까지 한 번에 사용할 수 있습니다.</p>
+      </div>
+
+      <a href="{{ url_for('post.create_post') }}" class="btn btn-primary">글쓰기</a>
+    </div>
+
+    <form method="get" class="board-toolbar">
+      <input
+        type="text"
+        name="keyword"
+        value="{{ keyword }}"
+        placeholder="제목 / 내용 / 작성자 검색"
+        class="board-search"
+      >
+
+      <select name="sort" class="board-select">
+        <option value="latest" {% if sort == 'latest' %}selected{% endif %}>최신순</option>
+        <option value="oldest" {% if sort == 'oldest' %}selected{% endif %}>오래된순</option>
+      </select>
+
+      <label class="board-check">
+        <input type="checkbox" name="my" value="1" {% if my_only %}checked{% endif %}>
+        내 글만 보기
+      </label>
+
+      <button type="submit" class="btn btn-secondary">적용</button>
+    </form>
+
+    {% if posts %}
+      <div class="list-table">
+        <div class="list-head board-head">
+          <div>ID</div>
+          <div>제목</div>
+          <div>작성자</div>
+          <div>첨부파일</div>
+          <div>작성일</div>
+        </div>
+
+        {% for p in posts %}
+          <div class="list-row board-row">
+            <div>{{ p.id }}</div>
+
+            <div>
+              <a href="{{ url_for('post.post_detail', post_id=p.id) }}" class="board-link">
+                {{ p.title }}
+              </a>
+            </div>
+
+            <div>{{ p.user.username }}</div>
+
+            <div>
+              {% if p.files %}
+                {{ p.files|length }}개
+              {% else %}
+                없음
+              {% endif %}
+            </div>
+
+            <div>
+              {{ p.created_at.strftime('%Y-%m-%d %H:%M') if p.created_at else '' }}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      <div class="pagination-wrap">
+        {% if pagination.has_prev %}
+          <a href="{{ url_for('post.post_list', page=pagination.prev_num, keyword=keyword, sort=sort, my=1 if my_only else 0) }}" class="page-btn">이전</a>
+        {% endif %}
+
+        {% for page_num in pagination.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+          {% if page_num %}
+            {% if page_num == pagination.page %}
+              <span class="page-btn active">{{ page_num }}</span>
+            {% else %}
+              <a href="{{ url_for('post.post_list', page=page_num, keyword=keyword, sort=sort, my=1 if my_only else 0) }}" class="page-btn">{{ page_num }}</a>
+            {% endif %}
+          {% else %}
+            <span class="page-dots">...</span>
+          {% endif %}
+        {% endfor %}
+
+        {% if pagination.has_next %}
+          <a href="{{ url_for('post.post_list', page=pagination.next_num, keyword=keyword, sort=sort, my=1 if my_only else 0) }}" class="page-btn">다음</a>
+        {% endif %}
+      </div>
+    {% else %}
+      <div class="empty-box">
+        <p>조건에 맞는 게시글이 없습니다.</p>
+      </div>
+    {% endif %}
+  </div>
+</main>
+{% endblock %}

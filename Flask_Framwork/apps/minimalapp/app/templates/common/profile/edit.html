@@ -1,0 +1,52 @@
+{% extends 'layouts/member_base.html' %}
+
+{% block member_title %}계정 정보 수정{% endblock %}
+
+{% block member_content %}
+<main class="sub-main">
+  <div class="container narrow-container">
+
+    <div class="page-top">
+      <span class="section-label">Edit Profile</span>
+      <h2>계정 정보 수정</h2>
+      <p>내 계정 정보를 수정할 수 있습니다.</p>
+    </div>
+
+    <div class="profile-card">
+      {% if error %}
+        <div class="alert-error">{{ error }}</div>
+      {% endif %}
+
+      <form method="post" class="styled-form">
+        <div class="form-group">
+          <label for="username">아이디</label>
+          <input
+            id="username"
+            type="text"
+            name="username"
+            value="{{ user.username }}"
+            placeholder="아이디를 입력하세요"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="email">이메일</label>
+          <input
+            id="email"
+            type="email"
+            name="email"
+            value="{{ user.email }}"
+            placeholder="이메일을 입력하세요"
+          >
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">수정 저장</button>
+          <a href="{{ url_for('member.profile') }}" class="btn btn-secondary">취소</a>
+        </div>
+      </form>
+    </div>
+
+  </div>
+</main>
+{% endblock %}

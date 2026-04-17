@@ -1,0 +1,155 @@
+.form-card,
+.detail-card,
+.detail-message-box,
+.detail-reply-box {
+  background: #ffffff;
+  border: 1px solid #e6ebf3;
+  border-radius: 24px;
+  padding: 28px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+  margin-bottom: 20px;
+}
+
+.board-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.board-toolbar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.board-search {
+  flex: 1;
+  min-width: 260px;
+  padding: 12px 14px;
+  border: 1px solid #dbe3ef;
+  border-radius: 12px;
+  background: #ffffff;
+}
+
+.board-select {
+  min-width: 120px;
+  padding: 12px 14px;
+  border: 1px solid #dbe3ef;
+  border-radius: 12px;
+  background: #ffffff;
+}
+
+.board-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #374151;
+  font-weight: 600;
+}
+
+.board-head {
+  grid-template-columns: 80px 1.4fr 180px 120px 180px;
+}
+
+.board-row {
+  grid-template-columns: 80px 1.4fr 180px 120px 180px;
+}
+
+.admin-board-head {
+  grid-template-columns: 80px 1.4fr 160px 100px 170px 100px;
+}
+
+.admin-board-row {
+  grid-template-columns: 80px 1.4fr 160px 100px 170px 100px;
+}
+
+.board-link {
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.board-link:hover {
+  color: #2f6bff;
+}
+
+.file-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.file-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid #eef2f7;
+}
+
+.file-item:last-child {
+  border-bottom: none;
+}
+
+.file-item p {
+  margin: 6px 0 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.pagination-wrap {
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.page-btn {
+  min-width: 42px;
+  height: 42px;
+  padding: 0 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: #ffffff;
+  border: 1px solid #dbe3ef;
+  color: #1f2937;
+  font-weight: 700;
+}
+
+.page-btn:hover {
+  background: #f8fafc;
+}
+
+.page-btn.active {
+  background: linear-gradient(135deg, #2f6bff 0%, #5ea0ff 100%);
+  color: #ffffff;
+  border-color: transparent;
+}
+
+.page-dots {
+  padding: 0 6px;
+  color: #6b7280;
+  font-weight: 700;
+}
+
+@media (max-width: 992px) {
+  .board-head,
+  .board-row,
+  .admin-board-head,
+  .admin-board-row {
+    grid-template-columns: 1fr;
+  }
+
+  .file-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

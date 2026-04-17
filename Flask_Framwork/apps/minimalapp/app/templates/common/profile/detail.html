@@ -1,0 +1,43 @@
+{% extends 'layouts/member_base.html' %}
+
+{% block member_title %}내 계정 정보{% endblock %}
+
+{% block member_content %}
+<main class="sub-main">
+  <div class="container narrow-container">
+
+    <div class="page-top">
+      <span class="section-label">My Profile</span>
+      <h2>내 계정 정보</h2>
+      <p>현재 로그인한 계정 정보를 확인할 수 있습니다.</p>
+    </div>
+
+    <div class="profile-card">
+      <div class="profile-row">
+        <span>아이디</span>
+        <strong>{{ user.username }}</strong>
+      </div>
+
+      <div class="profile-row">
+        <span>이메일</span>
+        <strong>{{ user.email }}</strong>
+      </div>
+
+      <div class="profile-row">
+        <span>권한</span>
+        <strong>{{ user.role }}</strong>
+      </div>
+
+      <div class="profile-row">
+        <span>가입일</span>
+        <strong>{{ user.created_at.strftime('%Y-%m-%d %H:%M') if user.created_at else '' }}</strong>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <a href="{{ url_for('member.profile_edit') }}" class="btn btn-primary">계정 정보 수정</a>
+    </div>
+
+  </div>
+</main>
+{% endblock %}

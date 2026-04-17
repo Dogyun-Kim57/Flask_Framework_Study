@@ -1,0 +1,66 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}문의하기{% endblock %}
+
+{% block extra_css %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/contact.css') }}">
+{% endblock %}
+
+{% block content %}
+<main class="sub-main">
+  <div class="container">
+
+    <div class="page-top">
+      <span class="section-label">Contact</span>
+      <h2>문의하기</h2>
+      <p>서비스 이용 중 궁금한 점이나 개선 의견을 남겨주세요.</p>
+    </div>
+
+    <div class="form-card">
+      {% if error %}
+        <div class="alert-error">{{ error }}</div>
+      {% endif %}
+
+      <form method="post" class="styled-form">
+        <div class="form-group">
+          <label for="name">사용자명</label>
+          <input
+            id="name"
+            type="text"
+            name="name"
+            value="{{ username|default('', true) }}"
+            placeholder="사용자명을 입력하세요"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="email">메일주소</label>
+          <input
+            id="email"
+            type="email"
+            name="email"
+            value="{{ email|default('', true) }}"
+            placeholder="메일주소를 입력하세요"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="description">문의내용</label>
+          <textarea
+            id="description"
+            name="description"
+            placeholder="문의 내용을 입력하세요"
+          >{{ description|default('', true) }}</textarea>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">전송하기</button>
+          <a href="{{ url_for('main.index') }}" class="btn btn-secondary">홈으로</a>
+        </div>
+      </form>
+    </div>
+
+  </div>
+</main>
+{% endblock %}

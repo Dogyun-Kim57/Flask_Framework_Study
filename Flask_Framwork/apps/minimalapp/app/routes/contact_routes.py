@@ -39,13 +39,11 @@ def contact():
     """
 
     if request.method == "POST":
-        # 폼 입력값 가져오기
         name = request.form.get("name", "")
         email = request.form.get("email", "")
         description = request.form.get("description", "")
 
         try:
-            # 1) 문의 저장
             saved_contact = ContactService.create_contact(
                 user_id=get_current_user_id(),
                 name=name,
@@ -53,28 +51,21 @@ def contact():
                 description=description
             )
 
-            # 2) 성공적으로 저장된 문의를 세션에 일부 보관
-            # 다음 문의 작성 시 이름/이메일 자동 표시용
             session["last_name"] = saved_contact.name
             session["last_email"] = saved_contact.email
 
-            # 3) 관리자 메일 발송
-            # 메일 전송 실패까지 사용자 검증 에러로 묶고 싶지 않다면
-            # try/except를 따로 분리할 수도 있다.
             MailService.send_contact_email(saved_contact)
 
-            # 4) 완료 화면 출력
             return Response.render(
-                "contact/contact_complete.html",
+                "contact/complete.html",
                 username=saved_contact.name,
                 email=saved_contact.email,
                 description=saved_contact.description
             )
 
         except ValidationError as e:
-            # 입력 검증 실패 시 기존 입력값 유지
             return Response.render(
-                "contact/contact.html",
+                "contact/create.html",
                 error=str(e),
                 username=name,
                 email=email,
@@ -82,24 +73,19 @@ def contact():
             )
 
         except Exception:
-            # 메일 발송 등 기타 예외 처리
-            # 실무에서는 로깅 추가 권장
             return Response.render(
-                "contact/contact.html",
+                "contact/create.html",
                 error="문의는 저장되었지만 메일 발송 중 문제가 발생했습니다. 관리자에게 문의해주세요.",
                 username=name,
                 email=email,
                 description=description
             )
 
-    # GET 요청 시 기본값 설정
-    # 로그인한 사용자면 회원정보 우선
-    # 비로그인 상태면 마지막 문의 입력값 사용
     default_name = get_current_username() or session.get("last_name", "")
     default_email = get_current_user_email() or session.get("last_email", "")
 
     return Response.render(
-        "contact/contact.html",
+        "contact/create.html",
         username=default_name,
         email=default_email
     )
@@ -111,13 +97,12 @@ def contact_history():
     """
     로그인 사용자의 문의 내역 조회 라우트
 
-    - 로그인한 사용자만 접근 가능
-    - 해당 사용자의 문의 목록을 최신순으로 조회
+    - 현재 구조에서는 member/inquiry/list.html 로 연결
     """
 
     contacts = ContactRepository.find_by_user_id(get_current_user_id())
 
     return Response.render(
-        "contact/contact_history.html",
+        "member/inquiry/list.html",
         contacts=contacts
     )

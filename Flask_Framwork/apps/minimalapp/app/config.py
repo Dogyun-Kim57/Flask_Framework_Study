@@ -36,3 +36,15 @@ class Config:
 
     # 문의 메일을 받을 관리자 이메일
     ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", "admin@example.com")
+
+    # 게시판 업로드 설정
+    BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+    UPLOAD_FOLDER = os.path.join(BASE_DIR, "static", "uploads")
+    MAX_CONTENT_LENGTH = 50 * 1024 * 1024  # 전체 요청 최대 50MB
+
+    ALLOWED_EXTENSIONS = {
+        "png", "jpg", "jpeg", "gif",
+        "pdf", "txt", "zip",
+        "mp4", "mov",
+        "doc", "docx", "xls", "xlsx"
+    }

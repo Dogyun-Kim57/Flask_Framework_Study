@@ -1,0 +1,51 @@
+{% extends 'layouts/admin_base.html' %}
+
+{% block admin_title %}회원 목록{% endblock %}
+
+{% block admin_content %}
+<main class="sub-main">
+  <div class="container">
+
+    <div class="page-top">
+      <span class="section-label">Admin User List</span>
+      <h2>회원 목록</h2>
+      <p>가입된 전체 회원 정보를 관리자가 확인할 수 있습니다.</p>
+    </div>
+
+    {% if users %}
+      <div class="list-table">
+
+        <div class="list-head admin-user-head">
+          <div>ID</div>
+          <div>아이디</div>
+          <div>이메일</div>
+          <div>권한</div>
+          <div>가입일</div>
+        </div>
+
+        {% for u in users %}
+          <div class="list-row admin-user-row">
+            <div>{{ u.id }}</div>
+            <div>{{ u.username }}</div>
+            <div>{{ u.email }}</div>
+            <div>{{ u.role }}</div>
+
+            <div class="admin-inquiry-actions">
+              <span>{{ u.created_at.strftime('%Y-%m-%d %H:%M') if u.created_at else '' }}</span>
+              <a href="{{ url_for('admin.user_detail', user_id=u.id) }}" class="btn btn-secondary btn-sm">
+                상세보기
+              </a>
+            </div>
+          </div>
+        {% endfor %}
+
+      </div>
+    {% else %}
+      <div class="empty-box">
+        <p>회원 데이터가 없습니다.</p>
+      </div>
+    {% endif %}
+
+  </div>
+</main>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends 'layouts/admin_base.html' %}
+
+{% block admin_title %}문의 목록{% endblock %}
+
+{% block admin_content %}
+<main class="sub-main">
+  <div class="container">
+
+    <div class="page-top">
+      <span class="section-label">Admin Inquiry List</span>
+      <h2>문의 목록</h2>
+      <p>전체 사용자 문의를 확인하고 관리할 수 있습니다.</p>
+    </div>
+
+    {% if contacts %}
+      <div class="list-table">
+
+        <div class="list-head">
+          <div>접수일</div>
+          <div>이름</div>
+          <div>이메일</div>
+          <div>문의내용</div>
+        </div>
+
+        {% for c in contacts %}
+          <div class="list-row admin-inquiry-row">
+            <div>
+              {{ c.created_at.strftime('%Y-%m-%d %H:%M') if c.created_at else '' }}
+            </div>
+
+            <div>{{ c.name }}</div>
+            <div>{{ c.email }}</div>
+
+            <div class="admin-inquiry-actions">
+              <div class="text-ellipsis" title="{{ c.description }}">
+                {{ c.description }}
+              </div>
+
+              <a href="{{ url_for('admin.inquiry_detail', contact_id=c.id) }}"
+                 class="btn btn-secondary btn-sm">
+                상세보기
+              </a>
+            </div>
+          </div>
+        {% endfor %}
+
+      </div>
+    {% else %}
+      <div class="empty-box">
+        <p>문의 데이터가 없습니다.</p>
+      </div>
+    {% endif %}
+
+  </div>
+</main>
+{% endblock %}
