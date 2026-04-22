@@ -1,0 +1,60 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}실시간 탐지{% endblock %}
+
+{% block extra_css %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/ai_stream.css') }}">
+{% endblock %}
+
+{% block content %}
+<main class="sub-main">
+  <div class="container">
+
+    <div class="page-top">
+      <span class="section-label">Realtime Detection</span>
+      <h2>실시간 탐지</h2>
+      <p>카메라 영상을 실시간으로 분석하고 탐지 결과를 표시합니다.</p>
+    </div>
+
+    <div class="form-card ai-detect-card">
+      <div class="form-group">
+        <label for="target">감시 대상 입력</label>
+        <input
+          id="target"
+          type="text"
+          placeholder="예: person, car, dog"
+        >
+      </div>
+
+      <div class="form-actions">
+        <button id="set-target-btn" class="btn btn-primary">타겟 적용</button>
+      </div>
+    </div>
+
+    <div class="detail-card ai-video-card">
+      <h3>실시간 영상</h3>
+
+      <div id="stream-placeholder" class="stream-placeholder">
+        아직 수신된 영상 프레임이 없습니다.
+      </div>
+
+      <img
+        id="stream"
+        alt="실시간 탐지 스트림"
+        class="ai-stream-image"
+        style="display: none;"
+      >
+    </div>
+
+    <div class="detail-reply-box ai-alert-card">
+      <h3>탐지 알림</h3>
+      <p id="alert" class="muted-text">아직 탐지 알림이 없습니다.</p>
+    </div>
+
+  </div>
+</main>
+
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+<script src="{{ url_for('static', filename='js/ai_stream.js') }}"></script>
+{% endblock %}

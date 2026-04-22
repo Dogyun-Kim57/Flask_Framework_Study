@@ -1,0 +1,33 @@
+.ai-detect-card,
+.ai-video-card,
+.ai-alert-card {
+  background: #ffffff;
+  border: 1px solid #e6ebf3;
+  border-radius: 24px;
+  padding: 28px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+  margin-bottom: 20px;
+}
+
+.ai-stream-image {
+  width: 100%;
+  max-width: 900px;
+  border-radius: 16px;
+  border: 1px solid #dbe3ef;
+  background: #0f172a;
+}
+
+.stream-placeholder {
+  width: 100%;
+  max-width: 900px;
+  min-height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  border: 1px dashed #cbd5e1;
+  background: #f8fafc;
+  color: #64748b;
+  text-align: center;
+  padding: 24px;
+}
