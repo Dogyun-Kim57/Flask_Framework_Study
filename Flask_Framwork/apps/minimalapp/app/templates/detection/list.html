@@ -1,0 +1,105 @@
+{% extends 'layouts/member_base.html' %}
+
+{% block member_title %}
+  {% if alert_mode %}탐지 알림 기록{% else %}탐지 기록{% endif %}
+{% endblock %}
+
+{% block extra_css %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/post.css') }}">
+{% endblock %}
+
+{% block member_content %}
+<main class="sub-main">
+  <div class="container">
+    <div class="page-top board-top">
+      <div>
+        <span class="section-label">
+          {% if alert_mode %}Detection Alerts{% else %}Detection List{% endif %}
+        </span>
+        <h2>
+          {% if alert_mode %}탐지 알림 기록{% else %}탐지 기록{% endif %}
+        </h2>
+        <p>
+          {% if alert_mode %}
+            알림 발생 건만 모아서 확인할 수 있습니다.
+          {% else %}
+            최근 탐지 결과를 조회하고 상세 정보를 확인할 수 있습니다.
+          {% endif %}
+        </p>
+      </div>
+    </div>
+
+    {% if not alert_mode %}
+    <form method="get" class="board-toolbar">
+      <input
+        type="text"
+        name="label"
+        value="{{ keyword }}"
+        placeholder="라벨 검색 예: person"
+        class="board-search"
+      >
+      <button type="submit" class="btn btn-secondary">검색</button>
+    </form>
+    {% endif %}
+
+    {% if detections %}
+      <div class="list-table">
+        <div class="list-head admin-board-head">
+          <div>ID</div>
+          <div>라벨</div>
+          <div>신뢰도</div>
+          <div>타겟 일치</div>
+          <div>알림</div>
+          <div>상세</div>
+        </div>
+
+        {% for d in detections %}
+          <div class="list-row admin-board-row">
+            <div>{{ d.id }}</div>
+            <div>{{ d.label }}</div>
+            <div>{{ '%.4f'|format(d.confidence) }}</div>
+            <div>{{ 'Y' if d.is_target_match else 'N' }}</div>
+            <div>{{ 'Y' if d.is_alert else 'N' }}</div>
+            <div>
+              <a href="{{ url_for('detection.detection_detail', detection_id=d.id) }}"
+                 class="btn btn-secondary btn-sm">
+                상세보기
+              </a>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      <div class="pagination-wrap">
+        {% if pagination.has_prev %}
+          <a href="{{ url_for(request.endpoint, page=pagination.prev_num, label=keyword) }}"
+             class="page-btn">이전</a>
+        {% endif %}
+
+        {% for page_num in pagination.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+          {% if page_num %}
+            {% if page_num == pagination.page %}
+              <span class="page-btn active">{{ page_num }}</span>
+            {% else %}
+              <a href="{{ url_for(request.endpoint, page=page_num, label=keyword) }}"
+                 class="page-btn">{{ page_num }}</a>
+            {% endif %}
+          {% else %}
+            <span class="page-dots">...</span>
+          {% endif %}
+        {% endfor %}
+
+        {% if pagination.has_next %}
+          <a href="{{ url_for(request.endpoint, page=pagination.next_num, label=keyword) }}"
+             class="page-btn">다음</a>
+        {% endif %}
+      </div>
+    {% else %}
+      <div class="empty-box">
+        <p>표시할 탐지 기록이 없습니다.</p>
+      </div>
+    {% endif %}
+  </div>
+</main>
+{% endblock %}

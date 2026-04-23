@@ -9,6 +9,7 @@
       <a href="{{ url_for('contact.contact') }}">문의하기</a>
       <a href="{{ url_for('post.post_list') }}">게시판</a>
       <a href="{{ url_for('ai_detect.ai_stream') }}">실시간 탐지</a>
+      <a href="{{ url_for('detection.detection_list') }}">탐지 기록</a>
 
       {% if session.get('user_id') %}
 
@@ -22,6 +23,9 @@
               <a href="{{ url_for('admin.inquiry_list') }}">문의내역 확인</a>
               <a href="{{ url_for('admin.user_list') }}">가입 회원 정보 확인</a>
               <a href="{{ url_for('post.admin_post_list') }}">게시글 관리</a>
+
+              <!-- 🔥 새로 추가된 관리자 전용 탐지 현황 대시보드 -->
+              <a href="{{ url_for('detection_admin.dashboard') }}">탐지 현황 대시보드</a>
             </div>
           </div>
         {% else %}

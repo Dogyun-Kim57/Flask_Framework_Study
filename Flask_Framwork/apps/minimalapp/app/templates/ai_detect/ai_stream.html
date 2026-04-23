@@ -14,37 +14,112 @@
     <div class="page-top">
       <span class="section-label">Realtime Detection</span>
       <h2>실시간 탐지</h2>
-      <p>카메라 영상을 실시간으로 분석하고 탐지 결과를 표시합니다.</p>
+      <p>여러 IP 카메라를 카메라별로 시작/종료하고 탐지 상태를 확인할 수 있습니다.</p>
     </div>
 
-    <div class="form-card ai-detect-card">
-      <div class="form-group">
-        <label for="target">감시 대상 입력</label>
-        <input
-          id="target"
-          type="text"
-          placeholder="예: person, car, dog"
+    <div class="camera-grid">
+
+      {% for camera_id, camera in cameras.items() %}
+      <div class="detail-card ai-video-card camera-card" data-camera-id="{{ camera_id }}">
+
+        <div class="camera-card-top">
+          <div>
+            <h3>{{ camera.name }}</h3>
+            <p class="muted-text">카메라 ID: {{ camera_id }}</p>
+          </div>
+
+          <div class="status-badge-wrap">
+            <span class="status-label">상태</span>
+            <strong
+              id="rtsp-status-{{ camera_id }}"
+              class="status-text stopped"
+            >
+              중지됨
+            </strong>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="target-{{ camera_id }}">감시 대상 입력</label>
+          <input
+            id="target-{{ camera_id }}"
+            class="target-input"
+            data-camera-id="{{ camera_id }}"
+            type="text"
+            placeholder="예: person, car, dog"
+          >
+        </div>
+
+        <div class="form-actions">
+          <button
+            class="btn btn-primary set-target-btn"
+            data-camera-id="{{ camera_id }}"
+            type="button"
+          >
+            타겟 적용
+          </button>
+
+          {% if session.get('role') == 'admin' %}
+          <button
+            class="btn btn-secondary start-rtsp-btn"
+            data-camera-id="{{ camera_id }}"
+            type="button"
+          >
+            IP 카메라 시작
+          </button>
+
+          <button
+            class="btn btn-secondary stop-rtsp-btn"
+            data-camera-id="{{ camera_id }}"
+            type="button"
+          >
+            IP 카메라 종료
+          </button>
+          {% endif %}
+        </div>
+
+        <div
+          id="stream-placeholder-{{ camera_id }}"
+          class="stream-placeholder"
+        >
+          {% if session.get('role') == 'admin' %}
+            IP 카메라 시작 버튼을 눌러주세요.
+          {% else %}
+            관리자가 스트림을 시작하면 영상이 표시됩니다.
+          {% endif %}
+        </div>
+
+        <img
+          id="stream-{{ camera_id }}"
+          alt="{{ camera.name }} 실시간 스트림"
+          class="ai-stream-image"
+          style="display: none;"
         >
       </div>
+      {% endfor %}
 
-      <div class="form-actions">
-        <button id="set-target-btn" class="btn btn-primary">타겟 적용</button>
-      </div>
     </div>
 
     <div class="detail-card ai-video-card">
-      <h3>실시간 영상</h3>
+      <h3>브라우저 웹캠 테스트</h3>
 
-      <div id="stream-placeholder" class="stream-placeholder">
-        아직 수신된 영상 프레임이 없습니다.
+      <div class="form-actions">
+        <button id="start-webcam-btn" class="btn btn-secondary" type="button">웹캠 시작</button>
+        <button id="stop-webcam-btn" class="btn btn-secondary" type="button">웹캠 종료</button>
       </div>
 
-      <img
-        id="stream"
-        alt="실시간 탐지 스트림"
+      <div id="webcam-placeholder" class="stream-placeholder">
+        웹캠 시작 버튼을 눌러주세요.
+      </div>
+
+      <video
+        id="webcam"
         class="ai-stream-image"
+        autoplay
+        playsinline
+        muted
         style="display: none;"
-      >
+      ></video>
     </div>
 
     <div class="detail-reply-box ai-alert-card">
@@ -56,5 +131,5 @@
 </main>
 
 <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
-<script src="{{ url_for('static', filename='js/ai_stream.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/ai_detect/main.js') }}"></script>
 {% endblock %}

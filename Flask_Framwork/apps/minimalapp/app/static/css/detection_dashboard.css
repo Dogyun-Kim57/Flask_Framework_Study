@@ -1,0 +1,166 @@
+/* =========================
+   요약 카드 영역
+   4개의 핵심 숫자를 카드 형태로 보여준다.
+========================= */
+.dashboard-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.summary-card {
+  background: #ffffff;
+  border: 1px solid #e6ebf3;
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+}
+
+.summary-label {
+  display: inline-block;
+  margin-bottom: 10px;
+  color: #6b7280;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.summary-value {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 34px;
+  font-weight: 800;
+  color: #111827;
+}
+
+.summary-desc {
+  margin: 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+/* =========================
+   2단 패널 레이아웃
+========================= */
+.dashboard-two-column {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+/* =========================
+   공통 패널 스타일
+========================= */
+.dashboard-panel {
+  background: #ffffff;
+  border: 1px solid #e6ebf3;
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+  margin-bottom: 24px;
+}
+
+.panel-top {
+  margin-bottom: 18px;
+}
+
+.panel-top h3 {
+  margin: 0 0 8px;
+  color: #111827;
+}
+
+.panel-top p {
+  margin: 0;
+  color: #6b7280;
+}
+
+/* =========================
+   통계 리스트 스타일
+========================= */
+.dashboard-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dashboard-list-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid #eef2f7;
+}
+
+.dashboard-list-row:last-child {
+  border-bottom: none;
+}
+
+.dashboard-list-row strong {
+  color: #111827;
+}
+
+.dashboard-list-row p {
+  margin: 6px 0 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+/* 기본 카운트 배지 */
+.count-badge {
+  min-width: 54px;
+  height: 36px;
+  padding: 0 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: #eef4ff;
+  color: #1e3a8a;
+  font-weight: 800;
+}
+
+/* alert 전용 강조 배지 */
+.count-badge.danger {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+/* =========================
+   최근 탐지 목록 테이블
+   admin.css의 list-table 구조를 재사용한다.
+========================= */
+.detection-dashboard-head {
+  grid-template-columns: 80px 180px 140px 140px 100px 120px;
+}
+
+.detection-dashboard-row {
+  grid-template-columns: 80px 180px 140px 140px 100px 120px;
+}
+
+/* =========================
+   반응형
+========================= */
+@media (max-width: 1200px) {
+  .dashboard-summary-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .dashboard-two-column {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 992px) {
+  .detection-dashboard-head,
+  .detection-dashboard-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .dashboard-summary-grid {
+    grid-template-columns: 1fr;
+  }
+}

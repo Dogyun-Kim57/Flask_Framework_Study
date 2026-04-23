@@ -1,0 +1,191 @@
+{% extends 'layouts/admin_base.html' %}
+
+{% block admin_title %}탐지 현황 대시보드{% endblock %}
+
+{% block extra_css %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/detection_dashboard.css') }}">
+{% endblock %}
+
+{% block admin_content %}
+<main class="sub-main">
+  <div class="container">
+
+    <!-- =========================
+         페이지 상단 안내 영역
+    ========================== -->
+    <div class="page-top">
+      <span class="section-label">Detection Dashboard</span>
+      <h2>탐지 현황 대시보드</h2>
+      <p>탐지 누적 현황, 카메라별 통계, 라벨별 통계, 최근 탐지 기록을 한 화면에서 확인할 수 있습니다.</p>
+    </div>
+
+    <!-- =========================
+         요약 카드 영역
+         운영자가 가장 먼저 보는 핵심 지표
+    ========================== -->
+    <div class="dashboard-summary-grid">
+
+      <div class="summary-card">
+        <span class="summary-label">전체 탐지 수</span>
+        <strong class="summary-value">{{ summary.total_detections }}</strong>
+        <p class="summary-desc">현재 DB에 저장된 전체 탐지 기록 수</p>
+      </div>
+
+      <div class="summary-card">
+        <span class="summary-label">전체 알림 수</span>
+        <strong class="summary-value">{{ summary.total_alerts }}</strong>
+        <p class="summary-desc">target 일치로 alert 처리된 누적 건수</p>
+      </div>
+
+      <div class="summary-card">
+        <span class="summary-label">카메라 수</span>
+        <strong class="summary-value">{{ summary.unique_cameras }}</strong>
+        <p class="summary-desc">탐지 기록이 존재하는 카메라 수</p>
+      </div>
+
+      <div class="summary-card">
+        <span class="summary-label">라벨 종류 수</span>
+        <strong class="summary-value">{{ summary.unique_labels }}</strong>
+        <p class="summary-desc">탐지된 객체 라벨 종류 수</p>
+      </div>
+
+    </div>
+
+    <!-- =========================
+         2단 통계 영역
+         좌측: 카메라별 탐지 통계
+         우측: 라벨별 탐지 통계
+    ========================== -->
+    <div class="dashboard-two-column">
+
+      <section class="dashboard-panel">
+        <div class="panel-top">
+          <h3>카메라별 탐지 통계</h3>
+          <p>어떤 카메라에서 탐지가 많이 발생했는지 확인합니다.</p>
+        </div>
+
+        {% if camera_stats %}
+          <div class="dashboard-list">
+            {% for item in camera_stats %}
+              <div class="dashboard-list-row">
+                <div>
+                  <strong>{{ item.camera_name }}</strong>
+                  <p>{{ item.camera_id }}</p>
+                </div>
+                <span class="count-badge">{{ item.count }}</span>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <div class="empty-box">
+            <p>카메라 통계 데이터가 없습니다.</p>
+          </div>
+        {% endif %}
+      </section>
+
+      <section class="dashboard-panel">
+        <div class="panel-top">
+          <h3>라벨별 탐지 통계</h3>
+          <p>어떤 객체가 많이 탐지됐는지 확인합니다.</p>
+        </div>
+
+        {% if label_stats %}
+          <div class="dashboard-list">
+            {% for item in label_stats %}
+              <div class="dashboard-list-row">
+                <div>
+                  <strong>{{ item.label }}</strong>
+                  <p>탐지 라벨</p>
+                </div>
+                <span class="count-badge">{{ item.count }}</span>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <div class="empty-box">
+            <p>라벨 통계 데이터가 없습니다.</p>
+          </div>
+        {% endif %}
+      </section>
+
+    </div>
+
+    <!-- =========================
+         alert 기준 카메라 통계
+         단순 탐지가 아니라 실제 알림 기준
+    ========================== -->
+    <section class="dashboard-panel">
+      <div class="panel-top">
+        <h3>카메라별 알림 통계</h3>
+        <p>alert 발생 건만 기준으로 카메라별 집계를 확인합니다.</p>
+      </div>
+
+      {% if alert_camera_stats %}
+        <div class="dashboard-list">
+          {% for item in alert_camera_stats %}
+            <div class="dashboard-list-row">
+              <div>
+                <strong>{{ item.camera_name }}</strong>
+                <p>{{ item.camera_id }}</p>
+              </div>
+              <span class="count-badge danger">{{ item.count }}</span>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="empty-box">
+          <p>alert 통계 데이터가 없습니다.</p>
+        </div>
+      {% endif %}
+    </section>
+
+    <!-- =========================
+         최근 탐지 목록
+         최신 데이터 10건 표시
+    ========================== -->
+    <section class="dashboard-panel">
+      <div class="panel-top">
+        <h3>최근 탐지 목록</h3>
+        <p>최근 저장된 탐지 기록 10건을 빠르게 확인할 수 있습니다.</p>
+      </div>
+
+      {% if recent_detections %}
+        <div class="list-table">
+          <div class="list-head detection-dashboard-head">
+            <div>ID</div>
+            <div>카메라</div>
+            <div>라벨</div>
+            <div>신뢰도</div>
+            <div>alert</div>
+            <div>상세</div>
+          </div>
+
+          {% for d in recent_detections %}
+            <div class="list-row detection-dashboard-row">
+              <div>{{ d.id }}</div>
+              <div>{{ d.camera_name or d.camera_id or '-' }}</div>
+              <div>{{ d.label }}</div>
+              <div>{{ '%.4f'|format(d.confidence) }}</div>
+              <div>{{ 'Y' if d.is_alert else 'N' }}</div>
+              <div>
+                <a
+                  href="{{ url_for('detection.detection_detail', detection_id=d.id) }}"
+                  class="btn btn-secondary btn-sm"
+                >
+                  상세보기
+                </a>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="empty-box">
+          <p>최근 탐지 데이터가 없습니다.</p>
+        </div>
+      {% endif %}
+    </section>
+
+  </div>
+</main>
+{% endblock %}

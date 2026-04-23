@@ -5,3 +5,4 @@ from app.models.user import User
 from app.models.contact import Contact
 from app.models.post import Post
 from app.models.post_file import PostFile
+from app.models.detection import Detection
