@@ -1,0 +1,78 @@
+.ai-detect-card,
+.ai-video-card,
+.ai-alert-card,
+.camera-card {
+  background: #ffffff;
+  border: 1px solid #e6ebf3;
+  border-radius: 24px;
+  padding: 28px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+  margin-bottom: 20px;
+}
+
+.camera-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.camera-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.status-badge-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.status-label {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.status-text {
+  font-weight: 800;
+}
+
+.status-text.running {
+  color: #16a34a;
+}
+
+.status-text.stopped {
+  color: #dc2626;
+}
+
+.ai-stream-image {
+  width: 100%;
+  max-width: 100%;
+  border-radius: 16px;
+  border: 1px solid #dbe3ef;
+  background: #0f172a;
+}
+
+.stream-placeholder {
+  width: 100%;
+  min-height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  border: 1px dashed #cbd5e1;
+  background: #f8fafc;
+  color: #64748b;
+  text-align: center;
+  padding: 24px;
+}
+
+@media (max-width: 992px) {
+  .camera-grid {
+    grid-template-columns: 1fr;
+  }
+}

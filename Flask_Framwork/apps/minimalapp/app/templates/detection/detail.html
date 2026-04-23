@@ -1,0 +1,78 @@
+{% extends 'layouts/member_base.html' %}
+
+{% block member_title %}탐지 상세{% endblock %}
+
+{% block member_content %}
+<main class="sub-main">
+  <div class="container narrow-container">
+
+    <div class="page-top">
+      <span class="section-label">Detection Detail</span>
+      <h2>탐지 상세</h2>
+      <p>선택한 탐지 기록의 세부 정보를 확인할 수 있습니다.</p>
+    </div>
+
+    <div class="detail-card">
+      <div class="detail-row">
+        <span>ID</span>
+        <strong>{{ detection.id }}</strong>
+      </div>
+
+      <div class="detail-row">
+        <span>카메라 ID</span>
+        <strong>{{ detection.camera_id or '-' }}</strong>
+      </div>
+
+      <div class="detail-row">
+        <span>카메라 이름</span>
+        <strong>{{ detection.camera_name or '-' }}</strong>
+      </div>
+
+      <div class="detail-row">
+        <span>라벨</span>
+        <strong>{{ detection.label }}</strong>
+      </div>
+
+      <div class="detail-row">
+        <span>신뢰도</span>
+        <strong>{{ '%.6f'|format(detection.confidence) }}</strong>
+      </div>
+
+      <div class="detail-row">
+        <span>타겟 라벨</span>
+        <strong>{{ detection.target_label or '-' }}</strong>
+      </div>
+
+      <div class="detail-row">
+        <span>타겟 일치 여부</span>
+        <strong>{{ 'True' if detection.is_target_match else 'False' }}</strong>
+      </div>
+
+      <div class="detail-row">
+        <span>알림 발생 여부</span>
+        <strong>{{ 'True' if detection.is_alert else 'False' }}</strong>
+      </div>
+
+      <div class="detail-row">
+        <span>소스 타입</span>
+        <strong>{{ detection.source_type }}</strong>
+      </div>
+
+      <div class="detail-row">
+        <span>bbox</span>
+        <strong>({{ detection.x1 }}, {{ detection.y1 }}, {{ detection.x2 }}, {{ detection.y2 }})</strong>
+      </div>
+
+      <div class="detail-row">
+        <span>탐지 시각</span>
+        <strong>{{ detection.detected_at.strftime('%Y-%m-%d %H:%M:%S') if detection.detected_at else '' }}</strong>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <a href="{{ url_for('detection.detection_list') }}" class="btn btn-secondary">목록으로</a>
+    </div>
+
+  </div>
+</main>
+{% endblock %}

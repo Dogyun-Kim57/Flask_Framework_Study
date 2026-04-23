@@ -1,0 +1,166 @@
+/* =========================
+   공통 버튼 / 폼 / 에러 등
+========================= */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50px;
+  padding: 0 22px;
+  border-radius: 14px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #2f6bff 0%, #5ea0ff 100%);
+  color: #ffffff;
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  opacity: 0.95;
+}
+
+.btn-secondary {
+  background: #ffffff;
+  color: #1f2937;
+  border: 1px solid #d6deea;
+}
+
+.btn-secondary:hover {
+  background: #f8fafc;
+}
+
+.btn-full {
+  width: 100%;
+}
+
+.alert-error {
+  margin-bottom: 18px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  font-size: 14px;
+}
+
+.styled-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-size: 14px;
+  font-weight: 700;
+  color: #374151;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid #dbe3ef;
+  background: #ffffff;
+  outline: none;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: #2f6bff;
+  box-shadow: 0 0 0 4px rgba(47, 107, 255, 0.1);
+}
+
+.form-group textarea {
+  min-height: 180px;
+  resize: vertical;
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.form-actions.center {
+  justify-content: center;
+}
+
+/* =========================
+   🔥 드롭다운 관련
+========================= */
+
+/* 드롭다운 기준 박스 */
+.dropdown {
+  position: relative;
+}
+
+/* 드롭다운 열기 버튼 */
+.dropdown-toggle {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* 드롭다운 실제 메뉴 */
+.dropdown-menu {
+  position: absolute;
+  top: 140%;
+  right: 0;
+
+  min-width: 200px;
+  background: #0c1730;
+  border-radius: 14px;
+  padding: 10px;
+
+  display: none;
+  flex-direction: column;
+  gap: 6px;
+
+  box-shadow: 0 16px 35px rgba(0, 0, 0, 0.25);
+  z-index: 999;
+}
+
+/* 드롭다운 안 링크 */
+.dropdown-menu a {
+  color: #ffffff;
+  font-size: 14px;
+  padding: 10px 12px;
+  border-radius: 10px;
+}
+
+/* hover 시 메뉴 항목 강조 */
+.dropdown-menu a:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* 마우스를 올리거나 focus가 가면 메뉴 표시 */
+.dropdown:hover .dropdown-menu,
+.dropdown:focus-within .dropdown-menu {
+  display: flex;
+}
+
+/* 빈 상태 박스 */
+.empty-box {
+  padding: 32px;
+  border-radius: 20px;
+  background: #ffffff;
+  border: 1px solid #e6ebf3;
+  text-align: center;
+}
