@@ -1,0 +1,147 @@
+.traffic-control-card,
+.traffic-player-card,
+.traffic-list-card {
+  background: #ffffff;
+  border: 1px solid #e6ebf3;
+  border-radius: 24px;
+  padding: 28px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+  margin-bottom: 24px;
+}
+
+.traffic-control-card h3,
+.traffic-player-card h3,
+.traffic-list-card h3 {
+  margin: 0 0 16px;
+  color: #111827;
+}
+
+.traffic-form-grid,
+.traffic-coordinate-grid {
+  display: grid;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.traffic-form-grid {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.traffic-coordinate-grid {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.traffic-select {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid #dbe3ef;
+  background: #ffffff;
+  outline: none;
+}
+
+.traffic-select:focus {
+  border-color: #2f6bff;
+  box-shadow: 0 0 0 4px rgba(47, 107, 255, 0.1);
+}
+
+.traffic-player-top,
+.traffic-list-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.traffic-player-placeholder {
+  width: 100%;
+  min-height: 360px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  border: 1px dashed #cbd5e1;
+  background: #f8fafc;
+  color: #64748b;
+  text-align: center;
+  padding: 24px;
+}
+
+.traffic-video-player {
+  width: 100%;
+  max-height: 520px;
+  border-radius: 18px;
+  border: 1px solid #dbe3ef;
+  background: #0f172a;
+}
+
+.traffic-loading {
+  padding: 18px;
+  border-radius: 16px;
+  background: #eef4ff;
+  color: #1e3a8a;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.traffic-cctv-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.traffic-cctv-item {
+  border: 1px solid #e6ebf3;
+  border-radius: 18px;
+  padding: 18px;
+  background: #f8fafc;
+}
+
+.traffic-cctv-item h4 {
+  margin: 0 0 8px;
+  color: #111827;
+}
+
+.traffic-cctv-item p {
+  margin: 4px 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.traffic-cctv-actions {
+  margin-top: 14px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 992px) {
+  .traffic-form-grid,
+  .traffic-coordinate-grid,
+  .traffic-cctv-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+.traffic-url-link {
+  display: inline-block;
+  margin-top: 6px;
+  color: #2f6bff;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.traffic-url-link:hover {
+  text-decoration: underline;
+}
+
+.traffic-url-text {
+  font-size: 13px;
+  color: #64748b;
+}
+
+.play-cctv-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

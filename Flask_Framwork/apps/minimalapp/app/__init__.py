@@ -46,8 +46,12 @@ def create_app():
     from app.routes.ai_detect_routes import ai_detect_bp
     from app.routes.detection_routes import detection_bp
 
-    # 🔥 새로 추가된 관리자 전용 탐지 대시보드 블루프린트
+    #  새로 추가된 관리자 전용 탐지 대시보드 블루프린트
     from app.routes.detection_admin_routes import detection_admin_bp
+
+    # ITS 국가교통정보
+    from app.routes.traffic_routes import traffic_bp
+
 
     # =========================
     # 블루프린트 등록
@@ -61,6 +65,8 @@ def create_app():
     app.register_blueprint(ai_detect_bp)
     app.register_blueprint(detection_bp)
     app.register_blueprint(detection_admin_bp)
+    app.register_blueprint(traffic_bp)
+
 
     # Socket 이벤트 등록
     register_socket_events(socketio, app)

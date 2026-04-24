@@ -1,3 +1,7 @@
+from dotenv import load_dotenv
+
+load_dotenv()
+
 # app 패키지 안의 create_app 함수 import
 from app import create_app
 
