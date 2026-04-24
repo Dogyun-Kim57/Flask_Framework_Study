@@ -46,6 +46,12 @@ class Config:
     }
 
     # =========================
+    # ITS 국가교통정보센터 CCTV API
+    # =========================
+    ITS_API_KEY = os.getenv("ITS_API_KEY")
+    ITS_CCTV_API_URL = "https://openapi.its.go.kr:9443/cctvInfo"
+
+    # =========================
     # 여러 IP 카메라 관리용 설정
     # =========================
     # key:

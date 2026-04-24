@@ -1,0 +1,153 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}실시간 교통 탐지{% endblock %}
+
+{% block extra_css %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/traffic.css') }}">
+{% endblock %}
+
+{% block content %}
+<main class="sub-main">
+  <div class="container">
+
+    <div class="page-top">
+      <span class="section-label">Realtime Traffic CCTV</span>
+      <h2>실시간 교통 탐지</h2>
+      <p>
+        국가교통정보센터 CCTV API를 이용해 도로 CCTV 목록을 조회하고,
+        선택한 CCTV 영상을 확인할 수 있습니다.
+      </p>
+    </div>
+
+    <section class="traffic-control-card">
+      <h3>조회 조건</h3>
+
+      <div class="traffic-form-grid">
+        <div class="form-group">
+          <label for="roadType">도로 유형</label>
+          <select id="roadType" class="traffic-select">
+            <option value="all">전체</option>
+            <option value="ex">고속도로</option>
+            <option value="its">국도</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="cctvType">CCTV 유형</label>
+          <select id="cctvType" class="traffic-select">
+            <option value="5">동영상 MP4 HTTPS</option>
+            <option value="2">동영상 MP4</option>
+            <option value="4">실시간 스트리밍 HLS HTTPS</option>
+            <option value="1">실시간 스트리밍 HLS</option>
+            <option value="3">정지 영상</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="regionPreset">지역 프리셋</label>
+          <select id="regionPreset" class="traffic-select">
+            <option value="seoul">서울/수도권</option>
+            <option value="suwon">수원 주변</option>
+            <option value="daejeon">대전 주변</option>
+            <option value="busan">부산 주변</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="traffic-coordinate-grid">
+        <div class="form-group">
+          <label for="minX">최소 경도 minX</label>
+          <input id="minX" type="text" value="126.70">
+        </div>
+
+        <div class="form-group">
+          <label for="maxX">최대 경도 maxX</label>
+          <input id="maxX" type="text" value="127.20">
+        </div>
+
+        <div class="form-group">
+          <label for="minY">최소 위도 minY</label>
+          <input id="minY" type="text" value="37.30">
+        </div>
+
+        <div class="form-group">
+          <label for="maxY">최대 위도 maxY</label>
+          <input id="maxY" type="text" value="37.70">
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button id="load-cctv-btn" type="button" class="btn btn-primary">
+          CCTV 조회
+        </button>
+      </div>
+    </section>
+
+    <section class="traffic-player-card">
+      <div class="traffic-player-top">
+        <div>
+          <h3>선택한 CCTV 영상</h3>
+          <p id="selected-cctv-name" class="muted-text">
+            아직 선택된 CCTV가 없습니다.
+          </p>
+          <a
+            id="selected-cctv-link"
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="traffic-url-link"
+            style="display: none;"
+          >
+            원본 CCTV URL 새 탭에서 열기
+          </a>
+        </div>
+      </div>
+
+      <div id="traffic-player-placeholder" class="traffic-player-placeholder">
+        CCTV 목록에서 영상을 선택해주세요.
+      </div>
+
+      <video
+        id="traffic-video-player"
+        class="traffic-video-player"
+        controls
+        autoplay
+        muted
+        playsinline
+        style="display: none;"
+      ></video>
+
+      <img
+        id="traffic-image-player"
+        class="traffic-video-player"
+        alt="CCTV 정지 이미지"
+        style="display: none;"
+      >
+    </section>
+
+    <section class="traffic-list-card">
+      <div class="traffic-list-top">
+        <div>
+          <h3>CCTV 목록</h3>
+          <p id="traffic-count" class="muted-text">
+            CCTV 조회 전입니다.
+          </p>
+        </div>
+      </div>
+
+      <div id="traffic-loading" class="traffic-loading" style="display: none;">
+        CCTV 목록을 불러오는 중입니다...
+      </div>
+
+      <div id="traffic-error" class="alert-error" style="display: none;"></div>
+
+      <div id="traffic-cctv-list" class="traffic-cctv-list"></div>
+    </section>
+
+  </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<script type="module" src="{{ url_for('static', filename='js/traffic/traffic_cctv.js') }}"></script>
+{% endblock %}
