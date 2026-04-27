@@ -22,6 +22,7 @@ from app.models.contact import Contact
 admin_bp = Blueprint("admin", __name__, url_prefix="/admin")
 
 
+
 @admin_bp.route("/inquiries")
 @admin_required
 def inquiry_list():
