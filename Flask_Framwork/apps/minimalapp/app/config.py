@@ -72,7 +72,7 @@ class Config:
     RTSP_CAMERAS = {
         "cam1": {
             "name": "1번 카메라",
-            "url": "rtsp://admin:Mbc320!!@192.168.0.38:554/channel=0_stream=0&onvif=0.sdp?real_stream",
+            "url": "rtsp://admin:Mbc320!!@192.168.0.38:554/channel=0_stream=1&onvif=0.sdp?real_stream",
             "enabled": True,
         },
         "cam2": {
